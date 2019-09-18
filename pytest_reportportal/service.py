@@ -241,6 +241,15 @@ class PyTestServiceClass(with_metaclass(Singleton, object)):
         log.debug('ReportPortal - Finish TestItem: request_body=%s', fta_rq)
         self.RP.finish_test_item(**fta_rq)
 
+        if status == "FAILED":
+            payload = {
+                'end_time': timestamp(),
+                'issue': issue,
+                'status': 'FAILED'
+            }
+            log.debug('ReportPortal - End TestSuite: request_body=%s', payload)
+            self.RP.finish_test_item(**payload)
+
         parts = self._item_parts[test_item]
         while len(parts) > 0:
             part = parts.pop()
