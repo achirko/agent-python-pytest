@@ -241,11 +241,11 @@ class PyTestServiceClass(with_metaclass(Singleton, object)):
         log.debug('ReportPortal - Finish TestItem: request_body=%s', fta_rq)
         self.RP.finish_test_item(**fta_rq)
 
-        if status == "FAILED":
+        if status in ("FAILED", "ERROR"):
             payload = {
                 'end_time': timestamp(),
                 'issue': issue,
-                'status': 'FAILED'
+                'status': status
             }
             log.debug('ReportPortal - End TestSuite: request_body=%s', payload)
             self.RP.finish_test_item(**payload)
